@@ -1,8 +1,13 @@
 import server
 
 
+counter = 0
+
+
 def image_handler(image):
-    return "This is a message written by the server."
+    global counter
+    counter += 1
+    return "This is a message written by the server. message number:" + str(counter)
 
 
 def main():

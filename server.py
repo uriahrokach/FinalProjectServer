@@ -6,7 +6,7 @@ class Server:
 
     socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    def __init__(self, image_handler, port = 8080, buffer_size = 1024):
+    def __init__(self, image_handler, port=8080, buffer_size=1024):
         self._image_handler = image_handler
         self._buffer_size = buffer_size
         self._port = port
@@ -23,14 +23,17 @@ class Server:
             if image:
                 text = self._image_handler(image)
                 print("client at address " + address + " sent an image.")
-                client_socket.send(text)
+                text = text + "\n"
+                client_socket.send(text.encode())
+                print("sending client the text: " + text)
             else:
-                print("client at address "+ address + " disconnected.")
+                print("client at address " + address + " disconnected.")
                 active = False
 
     def run(self):
         while True:
             client_socket, address = self.socket.accept()
+            address = address[0]
 
             client_thread = threading.Thread(target=self.handler, args=(client_socket, address))
             client_thread.daemon = True
